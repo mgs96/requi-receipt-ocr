@@ -1,1 +1,5 @@
 node_modules
+processed_images/**
+!processed_images/.gitkeep
+raw_images/**
+!raw_images/.gitkeep
