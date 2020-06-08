@@ -49,6 +49,7 @@ const worker = tesseract.createWorker();
   /** Image OCR */
   let imageNumber = 1;
   const csvData = [];
+  let badImage = false;
   for (const image of rawImagesPaths) {
     const { data: { text }} = await worker.recognize(image);
     const arrString = text.split(" ");
@@ -68,15 +69,25 @@ const worker = tesseract.createWorker();
     const year = arrString[11];
     
     /** Copy images from raw folder to proccesed folder */
-    fs.copyFileSync(image, `${processedFolderNamePath}/${imageNumber}-${day}_${month}_${year}_${firstName}_${middleName}_${firstLastName}_${lastLastName}_${amount}.jpeg`);
-    imageNumber ++;
+    try {
+      fs.copyFileSync(image, `${processedFolderNamePath}/${imageNumber}-${day}_${month}_${year}_${firstName}_${middleName}_${firstLastName}_${lastLastName}_${amount}.jpeg`);
+    }
+    catch(error) {
+      console.log("ERROR AL PROCESAR ", image, " FAVOR REVISAR MANUALMENTE");
+      badImage = true;
+    }
 
     /** Create CSV data and add it to an array */
-    csvData.push({
-      date: `${day}-${month}-${year}`,
-      name: `${firstName} ${middleName} ${firstLastName} ${lastLastName}`,
-      amount: `${amount}`
-    });
+    if(!badImage) {
+      csvData.push({
+        date: `${day}-${month}-${year}`,
+        name: `${firstName} ${middleName} ${firstLastName} ${lastLastName}`,
+        amount: `${amount}`
+      });
+    }
+    /** Reset helper variables */
+    imageNumber ++;
+    badImage = false;
   }
 
   /** Write to CSV */
