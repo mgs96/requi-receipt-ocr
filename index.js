@@ -36,7 +36,9 @@ const worker = tesseract.createWorker();
 
   /** Store raw images in new array with complete path */
   for (const image of rawImages) {
-    rawImagesPaths.push(path.join('raw_images', image));
+    if (image != '.gitkeep') {
+      rawImagesPaths.push(path.join('raw_images', image));
+    }
   }
 
   /** Create a new folder for the processed images */
