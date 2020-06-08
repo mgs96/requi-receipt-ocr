@@ -75,7 +75,7 @@ const worker = tesseract.createWorker();
     catch(error) {
       console.log("ERROR AL PROCESAR ", image, " FAVOR REVISAR MANUALMENTE");
       console.log("LA IMAGEN SERA COPIADA A LA CARPETA DE PROCESADAS, PERO MANTENDRA SU NOMBRE");
-      fs.copyFileSync(image, `${processedFolderNamePath}/image.jpeg`);
+      fs.copyFileSync(image, `${processedFolderNamePath}/${imageNumber}_REVISAR.jpeg`);
       badImage = true;
     }
 
